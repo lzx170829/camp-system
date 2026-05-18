@@ -23,8 +23,8 @@ except Exception as e:
 # ==========================================
 # 2. 網頁前台設計：學生檢索介面
 # ==========================================
-st.set_page_config(page_title="114 營隊資訊檢索系統", page_icon="🏕️", layout="wide")
-st.title("🏕️ 114 營隊資訊檢索系統")
+st.set_page_config(page_title="營隊資訊檢索系統", page_icon="🏕️", layout="wide")
+st.title("營隊資訊檢索系統")
 st.markdown("你可以透過左側面板選擇學群，或在下方直接搜尋你有興趣的關鍵字或單位！")
 
 # 如果資料庫是空的 (只有標題沒有資料)
@@ -101,6 +101,6 @@ with st.sidebar.form("subscription_form"):
                 # 成功訊息也會顯示在側邊欄裡
                 st.success(f"🎉 訂閱成功！未來如果有【{track_group}】的新營隊，系統會自動通知你喔！")
             except Exception as e:
-                st.error("寫入資料庫失敗，請確認試算表是否有『學生訂閱』這個分頁。")
+                st.error("寫入資料庫失敗，請確認資訊是否有誤。")
         else:
             st.warning("請完整填寫姓名、信箱與想追蹤的學群喔！")
