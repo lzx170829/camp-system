@@ -72,3 +72,34 @@ else:
         use_container_width=True,
         hide_index=True, # 隱藏最左邊的 0,1,2,3 編號
     )
+# ==========================================
+# 3. 學生訂閱追蹤功能
+# ==========================================
+st.divider() # 畫一條分隔線
+st.subheader("📬 訂閱新營隊通知")
+st.markdown("如果想第一時間收到專屬學群的營隊通知，請留下你的信箱！")
+
+# 使用 st.form 建立表單，確保學生填完再一起送出
+with st.form("subscription_form"):
+    student_name = st.text_input("你的姓名或暱稱：")
+    student_email = st.text_input("你的學校 Email：")
+    
+    # 這裡的 groups 變數會抓取前面已經抓好的學群清單，我們排除第一個"顯示全部"
+    track_group = st.selectbox("想追蹤的學群：", groups[1:]) 
+    
+    # 送出按鈕
+    submit_button = st.form_submit_button("送出訂閱")
+    
+    if submit_button:
+        # 檢查是不是每個欄位都有填
+        if student_name and student_email and track_group:
+            try:
+                # 連線到「學生訂閱」分頁
+                sub_worksheet = sh.worksheet("學生訂閱")
+                # 將學生的資料新增到試算表的最下方新的一行
+                sub_worksheet.append_row([student_name, student_email, track_group])
+                st.success(f"🎉 訂閱成功！未來如果有【{track_group}】的新營隊，系統會自動通知你喔！")
+            except Exception as e:
+                st.error("寫入資料庫失敗，請確認試算表是否有『學生訂閱』這個分頁。")
+        else:
+            st.warning("請完整填寫姓名、信箱與想追蹤的學群喔！")
