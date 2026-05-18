@@ -24,7 +24,7 @@ except Exception as e:
 # 2. 網頁前台設計：學生檢索介面
 # ==========================================
 st.set_page_config(page_title="營隊資訊檢索系統", page_icon="🏕️", layout="wide")
-st.title("營隊資訊檢索系統")
+st.markdown("<h1 style='text-align: center;'>🏕️ 114 營隊資訊檢索系統</h1>", unsafe_allow_html=True)
 st.markdown("你可以透過左側面板選擇學群，或在下方直接搜尋你有興趣的關鍵字或單位！")
 
 # 如果資料庫是空的 (只有標題沒有資料)
