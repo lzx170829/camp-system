@@ -7,7 +7,7 @@ import pandas as pd
 # ==========================================
 # 讀取 JSON 金鑰檔案 (請確保檔名正確，且放在同一資料夾)
 try:
-    gc = gspread.service_account(filename="google_key.json")
+    gc = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
     # 透過試算表名稱打開檔案
     sh = gc.open("114營隊推播系統資料庫")
     # 選擇「營隊資訊」分頁
