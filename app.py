@@ -24,14 +24,16 @@ except Exception as e:
 # 2. 網頁前台設計：學生檢索介面
 # ==========================================
 st.set_page_config(page_title="新店高中營隊資訊系統", page_icon="🏕️", layout="wide")
-st.markdown("<h1 style='text-align: center;'>新店高中營隊資訊系統</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center;'>您可以直接輸入關鍵字搜尋，或利用下方選單快速帶入學群！</p>", unsafe_allow_html=True)
+
+# 標題與副標題：統一置中對齊
+st.markdown("<h1 style='text-align: center;'>🏕️ 新店高中營隊資訊系統</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #555555;'>您可以直接輸入關鍵字搜尋，或利用下方選單快速帶入學群！</p>", unsafe_allow_html=True)
 
 # 如果資料庫是空的 (只有標題沒有資料)
 if df.empty:
     st.warning("目前還沒有任何營隊資訊喔！請管理員先至試算表新增資料。")
 else:
-    st.divider() 
+    st.divider() # 頂部裝飾線
     
     # --- 整理學群清單 ---
     all_groups = []
@@ -48,25 +50,29 @@ else:
         else:
             st.session_state.search_bar = "" 
 
-    # --- 上下排列設計 (搜尋優先) ---
-    # 1. 將主要的文字輸入框放在上方 (拿掉數字列點)
+    # --- 搜尋工具區 (上下排列) ---
+    # 置頂搜尋框
     search_query = st.text_input(
         "🔍 搜尋關鍵字、學群或主辦單位：", 
         key="search_bar"
     )
 
-    # 2. 將學群選單放在下方作為輔助 (拿掉數字列點)
+    # 輔助學群選單
     st.selectbox(
-        "💡 快速帶入學群：", 
+        "💡 快速帶入學群參考：", 
         ["✏️ (自行輸入關鍵字)"] + groups, 
         key="dropdown_selector",
         on_change=fill_search_bar
     )
 
+    # ---------------------------------------------------------
+    # ✨ 在搜尋工具與結果之間增加分隔線
+    st.divider() 
+    # ---------------------------------------------------------
+
     # --- 資料過濾邏輯 ---
     filtered_df = df.copy()
     
-    # 只要搜尋框裡面有字，就去四個欄位裡面找
     if search_query:
         mask = (
             filtered_df['對應學群'].astype(str).str.contains(search_query, na=False) |
@@ -77,13 +83,10 @@ else:
         filtered_df = filtered_df[mask]
 
     # --- 顯示結果 ---
-    st.write(f"共找到 **{len(filtered_df)}** 筆符合條件的營隊：")
+    st.write(f"📊 共找到 **{len(filtered_df)}** 筆符合條件的營隊：")
     
     display_df = filtered_df.drop(columns=['推播狀態'], errors='ignore')
-
-
     
-    # 使用 Streamlit 內建的精美資料表呈現
     st.dataframe(
         display_df,
         use_container_width=True,
