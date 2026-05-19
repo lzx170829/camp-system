@@ -40,15 +40,15 @@ st.markdown(
 st.markdown(
     """
     <div style='text-align: center;'>
-        <h1 style='margin-bottom: 0px; padding-bottom: 0px;'>新店高中</h1>
+        <h1 style='margin-bottom: 0px; padding-bottom: 0px;'>🏕️ 新店高中</h1>
         <h1 style='margin-top: 5px; padding-top: 0px;'>營隊資訊系統</h1>
-        
         <p style='color: #555555; margin-bottom: 0px; padding-bottom: 0px; margin-top: 15px;'>您可以直接輸入關鍵字搜尋，</p>
         <p style='color: #555555; margin-top: 5px; padding-top: 0px;'>或利用下方選單快速帶入學群！</p>
     </div>
     """,
     unsafe_allow_html=True
 )
+
 # 如果資料庫是空的 (只有標題沒有資料)
 if df.empty:
     st.warning("目前還沒有任何營隊資訊喔！請管理員先至試算表新增資料。")
