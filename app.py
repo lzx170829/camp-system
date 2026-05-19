@@ -26,7 +26,7 @@ except Exception as e:
 st.set_page_config(page_title="新店高中營隊資訊系統", page_icon="🏕️", layout="wide")
 
 # 標題與副標題：統一置中對齊
-st.markdown("<h1 style='text-align: center;'>🏕️ 新店高中營隊資訊系統</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>新店高中營隊資訊系統</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #555555;'>您可以直接輸入關鍵字搜尋，或利用下方選單快速帶入學群！</p>", unsafe_allow_html=True)
 
 # 如果資料庫是空的 (只有標題沒有資料)
