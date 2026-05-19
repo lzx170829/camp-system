@@ -23,9 +23,15 @@ except Exception as e:
 # ==========================================
 # 2. 網頁前台設計：學生檢索介面
 # ==========================================
-st.set_page_config(page_title="新店高中營隊資訊系統", page_icon="🏕️", layout="wide")
+# ✨ 加入 initial_sidebar_state="expanded" 強制側邊欄預設打開
+st.set_page_config(
+    page_title="114 營隊資訊檢索系統", 
+    page_icon="🏕️", 
+    layout="wide",
+    initial_sidebar_state="expanded" 
+)
 
-# ✨ 完美置中與自訂網頁背景、隱藏官方圖示
+# ✨ 完美置中與自訂網頁背景、精準隱藏官方圖示
 st.markdown(
     """
     <style>
@@ -33,8 +39,8 @@ st.markdown(
     .stApp { background-color: #F4F7F6; }
     [data-testid="stSidebar"] { background-color: #E8ECEB; }
     
-    /* 🛡️ 隱藏右上角的 GitHub 貓咪與選單 */
-    [data-testid="stHeader"] { display: none !important; }
+    /* 🛡️ 精準隱藏右上角的 GitHub 貓咪與工具列 (保留左上角的側邊欄開關) */
+    [data-testid="stToolbar"] { display: none !important; }
     
     /* 🛡️ 隱藏網頁底部的 Made with Streamlit 浮水印 */
     footer { visibility: hidden; }
