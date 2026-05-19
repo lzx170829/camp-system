@@ -23,8 +23,8 @@ except Exception as e:
 # ==========================================
 # 2. 網頁前台設計：學生檢索介面
 # ==========================================
-st.set_page_config(page_title="營隊資訊檢索系統", page_icon="🏕️", layout="wide")
-st.markdown("<h1 style='text-align: center;'>🏕️ 114 營隊資訊檢索系統</h1>", unsafe_allow_html=True)
+st.set_page_config(page_title="新店高中營隊資訊系統", page_icon="🏕️", layout="wide")
+st.markdown("<h1 style='text-align: center;'>🏕️ 新店高中營隊資訊系統</h1>", unsafe_allow_html=True)
 st.markdown("你可以透過左側面板選擇學群，或在下方直接搜尋你有興趣的關鍵字或單位！")
 
 # 如果資料庫是空的 (只有標題沒有資料)
@@ -73,34 +73,54 @@ else:
         hide_index=True, # 隱藏最左邊的 0,1,2,3 編號
     )
 # ==========================================
-# 3. 學生訂閱追蹤功能 (移至側邊欄)
+# 3. 學生訂閱追蹤功能 (支援複選與更新)
 # ==========================================
-st.sidebar.divider() # 在側邊欄畫一條分隔線
-st.sidebar.subheader("📬 訂閱新營隊通知")
-st.sidebar.markdown("想第一時間收到通知？請留下信箱！")
+st.sidebar.divider() 
+st.sidebar.subheader("📬 訂閱/修改營隊通知")
+st.sidebar.markdown("請留下信箱。若先前已訂閱過，再次送出即可直接修改追蹤學群喔！")
 
-# 使用 st.sidebar.form 建立側邊欄表單
 with st.sidebar.form("subscription_form"):
     student_name = st.text_input("你的姓名或暱稱：")
     student_email = st.text_input("你的學校 Email：")
     
-    # 這裡的 groups 變數會抓取前面已經抓好的學群清單，我們排除第一個"顯示全部"
-    track_group = st.selectbox("想追蹤的學群：", groups[1:]) 
+    # 1. 改變為 multiselect (複選)，並將「顯示全部」設為預設選項
+    # options 直接放 groups (裡面已經包含"顯示全部"與所有學群)
+    track_group = st.sidebar.multiselect(
+        "想追蹤的學群 (可複選)：", 
+        options=groups,
+        default=["顯示全部"]
+    )
     
-    # 送出按鈕
-    submit_button = st.form_submit_button("送出訂閱")
+    submit_button = st.form_submit_button("送出訂閱 / 更新")
     
     if submit_button:
-        # 檢查是不是每個欄位都有填
-        if student_name and student_email and track_group:
+        # 確認姓名、信箱都有填，且至少有選一個學群
+        if student_name and student_email and len(track_group) > 0:
             try:
-                # 連線到「學生訂閱」分頁
                 sub_worksheet = sh.worksheet("學生訂閱")
-                # 將學生的資料新增到試算表的最下方新的一行
-                sub_worksheet.append_row([student_name, student_email, track_group])
-                # 成功訊息也會顯示在側邊欄裡
-                st.success(f"🎉 訂閱成功！未來如果有【{track_group}】的新營隊，系統會自動通知你喔！")
+                
+                # 將複選的結果(串列)用逗號連接成純文字，例如："資訊學群, 工程學群"
+                track_group_str = ", ".join(track_group)
+                
+                # 抓取目前試算表 B 欄 (第 2 欄) 所有的 Email
+                existing_emails = sub_worksheet.col_values(2)
+                
+                # 2. 判斷邏輯：更新或是新增
+                if student_email in existing_emails:
+                    # 如果信箱存在，找出它在第幾列 (list 索引從 0 開始，但試算表列數從 1 開始，故 +1)
+                    row_index = existing_emails.index(student_email) + 1
+                    
+                    # 更新該列的第 1 欄(姓名)與第 3 欄(學群)
+                    sub_worksheet.update_cell(row_index, 1, student_name)
+                    sub_worksheet.update_cell(row_index, 3, track_group_str)
+                    
+                    st.sidebar.success(f"🔄 更新成功！已將您的追蹤名單修改為：\n【{track_group_str}】")
+                else:
+                    # 如果信箱不存在，就在最下方新增一列
+                    sub_worksheet.append_row([student_name, student_email, track_group_str])
+                    st.sidebar.success(f"🎉 訂閱成功！未來有這類營隊會通知你喔！")
+                    
             except Exception as e:
-                st.error("寫入資料庫失敗，請確認資訊是否有誤。")
+                st.sidebar.error("寫入資料庫失敗，請稍後再試。")
         else:
-            st.warning("請完整填寫姓名、信箱與想追蹤的學群喔！")
+            st.sidebar.warning("請完整填寫姓名、信箱，並至少選擇一個學群喔！")
