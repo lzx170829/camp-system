@@ -32,10 +32,20 @@ if df.empty:
     st.warning("目前還沒有任何營隊資訊喔！請管理員先至試算表新增資料。")
 else:
     # --- 建立篩選器 (側邊欄與搜尋框) ---
-    st.sidebar.header("🔍 營隊篩選器")
+    st.sidebar.header("🔍 學群篩選")
     
-    # 1. 學群篩選 (自動抓取資料庫裡有出現的學群，並加上"顯示全部"選項)
-    groups = ["全選"] + list(df['對應學群'].unique())
+    # 1. 學群篩選 (支援單一營隊包含多個學群)
+    all_groups = []
+    for g in df['對應學群'].dropna():
+        # 把全形逗號換成半形，以逗號切割字串，並清除前後多餘空白
+        split_groups = [x.strip() for x in str(g).replace("，", ",").split(',') if x.strip()]
+        all_groups.extend(split_groups)
+        
+    # 去除重複項目，並在最前面加上"全選"
+    groups = ["全選"] + list(set(all_groups))
+    
+    # 為了讓每次顯示的學群順序固定，可以排個序 (排除"全選"做排序)
+    groups = ["全選"] + sorted(groups[1:])
     selected_group = st.sidebar.selectbox("請選擇對應學群：", groups)
     
     # 2. 關鍵字搜尋 (主畫面)
@@ -45,9 +55,9 @@ else:
     # 複製一份原始資料來過濾
     filtered_df = df.copy()
     
-    # 執行學群過濾
+    # 執行學群過濾 (改為模糊比對，只要儲存格內包含該學群就顯示)
     if selected_group != "全選":
-        filtered_df = filtered_df[filtered_df['對應學群'] == selected_group]
+        filtered_df = filtered_df[filtered_df['對應學群'].astype(str).str.contains(selected_group, na=False)]
         
     # 執行關鍵字過濾 (同時比對營隊名稱、單位、關鍵字這三個欄位)
     if search_query:
