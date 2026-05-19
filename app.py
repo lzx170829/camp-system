@@ -107,18 +107,21 @@ st.sidebar.divider()
 st.sidebar.subheader("📬 訂閱/修改營隊通知")
 st.sidebar.markdown("請留下信箱。若先前已訂閱過，再次送出即可直接修改追蹤學群喔！")
 
+# 準備給訂閱表單專用的選項（把「全選」加回去）
+sidebar_groups = ["全選"] + groups
+
+# 注意下方的 with 區塊，裡面的每一行都必須有縮排（按 Tab 鍵）
 with st.sidebar.form("subscription_form"):
     student_name = st.text_input("你的姓名或暱稱：")
     student_email = st.text_input("你的學校 Email：")
     
-    # 1. 改變為 multiselect (複選)，並將「顯示全部」設為預設選項
-    # options 直接放 groups (裡面已經包含"顯示全部"與所有學群)
-    track_group = st.sidebar.multiselect(
+    track_group = st.multiselect(
         "想追蹤的學群 (可複選)：", 
-        options=groups,
+        options=sidebar_groups,
         default=["全選"]
     )
     
+    # ⚠️ 就是這行！它必須乖乖縮排在 form 裡面，紅框錯誤就會消失
     submit_button = st.form_submit_button("送出訂閱 / 更新")
     
     if submit_button:
@@ -126,25 +129,16 @@ with st.sidebar.form("subscription_form"):
         if student_name and student_email and len(track_group) > 0:
             try:
                 sub_worksheet = sh.worksheet("學生訂閱")
-                
-                # 將複選的結果(串列)用逗號連接成純文字，例如："資訊學群, 工程學群"
                 track_group_str = ", ".join(track_group)
-                
-                # 抓取目前試算表 B 欄 (第 2 欄) 所有的 Email
                 existing_emails = sub_worksheet.col_values(2)
                 
-                # 2. 判斷邏輯：更新或是新增
+                # 判斷邏輯：更新或是新增
                 if student_email in existing_emails:
-                    # 如果信箱存在，找出它在第幾列 (list 索引從 0 開始，但試算表列數從 1 開始，故 +1)
                     row_index = existing_emails.index(student_email) + 1
-                    
-                    # 更新該列的第 1 欄(姓名)與第 3 欄(學群)
                     sub_worksheet.update_cell(row_index, 1, student_name)
                     sub_worksheet.update_cell(row_index, 3, track_group_str)
-                    
                     st.sidebar.success(f"🔄 更新成功！已將您的追蹤名單修改為：\n【{track_group_str}】")
                 else:
-                    # 如果信箱不存在，就在最下方新增一列
                     sub_worksheet.append_row([student_name, student_email, track_group_str])
                     st.sidebar.success(f"🎉 訂閱成功！未來有這類營隊會通知你喔！")
                     
