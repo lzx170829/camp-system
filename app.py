@@ -25,20 +25,21 @@ except Exception as e:
 # ==========================================
 st.set_page_config(page_title="新店高中營隊資訊系統", page_icon="🏕️", layout="wide")
 
-# 自訂網頁背景顏色
+# ✨ 完美置中與自訂網頁背景、隱藏官方圖示
 st.markdown(
     """
     <style>
+    /* 更改背景顏色 */
     .stApp { background-color: #F4F7F6; }
     [data-testid="stSidebar"] { background-color: #E8ECEB; }
+    
+    /* 🛡️ 隱藏右上角的 GitHub 貓咪與選單 */
+    [data-testid="stHeader"] { display: none !important; }
+    
+    /* 🛡️ 隱藏網頁底部的 Made with Streamlit 浮水印 */
+    footer { visibility: hidden; }
     </style>
-    """,
-    unsafe_allow_html=True
-)
-
-# ✨ 完美置中與對齊的標題與副標題設計
-st.markdown(
-    """
+    
     <div style='text-align: center;'>
         <h1 style='margin-bottom: 0px; padding-bottom: 0px;'>🏕️ 新店高中</h1>
         <h1 style='margin-top: 5px; padding-top: 0px;'>營隊資訊系統</h1>
