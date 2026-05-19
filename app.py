@@ -80,6 +80,8 @@ else:
     st.write(f"共找到 **{len(filtered_df)}** 筆符合條件的營隊：")
     
     display_df = filtered_df.drop(columns=['推播狀態'], errors='ignore')
+
+
     
     # 使用 Streamlit 內建的精美資料表呈現
     st.dataframe(
