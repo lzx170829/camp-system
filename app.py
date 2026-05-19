@@ -23,45 +23,46 @@ except Exception as e:
 # ==========================================
 # 2. 網頁前台設計：學生檢索介面
 # ==========================================
-st.set_page_config(page_title="新店高中營隊資訊系統", page_icon="🏕️", layout="wide")
-st.markdown("<h1 style='text-align: center;'>新店高中營隊資訊系統</h1>", unsafe_allow_html=True)
-st.markdown("你可以透過左側面板選擇學群，或在下方直接搜尋你有興趣的關鍵字或單位！")
+st.set_page_config(page_title="114 營隊資訊檢索系統", page_icon="🏕️", layout="wide")
+st.markdown("<h1 style='text-align: center;'>🏕️ 114 營隊資訊檢索系統</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>你可以透過下方選擇學群，或直接搜尋你有興趣的關鍵字與單位！</p>", unsafe_allow_html=True)
 
 # 如果資料庫是空的 (只有標題沒有資料)
 if df.empty:
     st.warning("目前還沒有任何營隊資訊喔！請管理員先至試算表新增資料。")
 else:
-    # --- 建立篩選器 (側邊欄與搜尋框) ---
-    st.sidebar.header("🔍 學群篩選")
+    st.divider() # 畫一條分隔線讓視覺更俐落
+    st.subheader("🔍 營隊搜尋與篩選")
     
-    # 1. 學群篩選 (支援單一營隊包含多個學群)
+    # --- 整理學群清單 (支援單一營隊包含多個學群) ---
     all_groups = []
     for g in df['對應學群'].dropna():
-        # 把全形逗號換成半形，以逗號切割字串，並清除前後多餘空白
         split_groups = [x.strip() for x in str(g).replace("，", ",").split(',') if x.strip()]
         all_groups.extend(split_groups)
-        
-    # 去除重複項目，並在最前面加上"全選"
     groups = ["全選"] + list(set(all_groups))
-    
-    # 為了讓每次顯示的學群順序固定，可以排個序 (排除"全選"做排序)
     groups = ["全選"] + sorted(groups[1:])
-    selected_group = st.sidebar.selectbox("請選擇對應學群：", groups)
+
+    # --- 建立並排的搜尋器 ---
+    # 將主畫面切成左右兩半，比例為 1:1
+    col1, col2 = st.columns(2)
     
-    # 2. 關鍵字搜尋 (主畫面)
-    search_query = st.text_input("輸入關鍵字 (例如：醫學、成大、志工)：", "")
+    with col1:
+        # 移除 st.sidebar，將選單放回主畫面的左半邊
+        selected_group = st.selectbox("請選擇對應學群：", groups)
+        
+    with col2:
+        # 將關鍵字搜尋放在主畫面的右半邊
+        search_query = st.text_input("輸入關鍵字 (例如：醫學、成大、志工)：", "")
 
     # --- 資料過濾邏輯 ---
-    # 複製一份原始資料來過濾
     filtered_df = df.copy()
     
-    # 執行學群過濾 (改為模糊比對，只要儲存格內包含該學群就顯示)
+    # 執行學群過濾 (模糊比對)
     if selected_group != "全選":
         filtered_df = filtered_df[filtered_df['對應學群'].astype(str).str.contains(selected_group, na=False)]
         
-    # 執行關鍵字過濾 (同時比對營隊名稱、單位、關鍵字這三個欄位)
+    # 執行關鍵字過濾
     if search_query:
-        # 將資料轉成字串並檢查是否包含搜尋詞
         mask = (
             filtered_df['營隊名稱'].astype(str).str.contains(search_query, na=False) |
             filtered_df['單位'].astype(str).str.contains(search_query, na=False) |
@@ -70,21 +71,19 @@ else:
         filtered_df = filtered_df[mask]
 
     # --- 顯示結果 ---
-    st.divider()
-    st.subheader(f"共找到 {len(filtered_df)} 筆符合條件的營隊：")
+    st.write(f"共找到 **{len(filtered_df)}** 筆符合條件的營隊：")
     
-    # 隱藏不需要讓學生看到的欄位 (例如推播狀態)
     display_df = filtered_df.drop(columns=['推播狀態'], errors='ignore')
     
-    # 使用 Streamlit 內建的精美資料表呈現，並將網址轉換為超連結
+    # 使用 Streamlit 內建的精美資料表呈現
     st.dataframe(
         display_df,
         use_container_width=True,
-        hide_index=True, # 隱藏最左邊的 0,1,2,3 編號
+        hide_index=True,
         column_config={
             "營隊連結": st.column_config.LinkColumn(
                 "營隊連結",
-                display_text="🔗 點擊前往" # 這行會把落落長的網址變成乾淨的文字
+                display_text="🔗 點擊前往" 
             )
         }
     )
