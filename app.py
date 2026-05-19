@@ -25,28 +25,30 @@ except Exception as e:
 # ==========================================
 st.set_page_config(page_title="新店高中營隊資訊系統", page_icon="🏕️", layout="wide")
 
-# ==========================================
-# ✨ 自訂網頁背景顏色
-# ==========================================
+# 自訂網頁背景顏色
 st.markdown(
     """
     <style>
-    /* 更改主畫面背景顏色 */
-    .stApp {
-        background-color: #F4F7F6; 
-    }
-    /* 更改側邊欄背景顏色 (如果不喜歡原本的灰色，也可以在這裡改) */
-    [data-testid="stSidebar"] {
-        background-color: #E8ECEB;
-    }
+    .stApp { background-color: #F4F7F6; }
+    [data-testid="stSidebar"] { background-color: #E8ECEB; }
     </style>
     """,
     unsafe_allow_html=True
 )
-# 標題與副標題：統一置中對齊
-st.markdown("<h1 style='text-align: center;'>新店高中<br>營隊資訊系統</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #555555;'>您可以直接輸入關鍵字搜尋，<br>或利用下方選單快速帶入學群！</p>", unsafe_allow_html=True)
 
+# ✨ 完美置中與對齊的標題與副標題設計
+st.markdown(
+    """
+    <div style='text-align: center;'>
+        <h1 style='margin-bottom: 0px; padding-bottom: 0px;'>🏕️ 新店高中</h1>
+        <h1 style='margin-top: 5px; padding-top: 0px;'>營隊資訊系統</h1>
+        
+        <p style='color: #555555; margin-bottom: 0px; padding-bottom: 0px; margin-top: 15px;'>您可以直接輸入關鍵字搜尋，</p>
+        <p style='color: #555555; margin-top: 5px; padding-top: 0px;'>或利用下方選單快速帶入學群！</p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 # 如果資料庫是空的 (只有標題沒有資料)
 if df.empty:
     st.warning("目前還沒有任何營隊資訊喔！請管理員先至試算表新增資料。")
