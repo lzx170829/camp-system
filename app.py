@@ -24,7 +24,7 @@ except Exception as e:
 # 2. 網頁前台設計：學生檢索介面
 # ==========================================
 st.set_page_config(page_title="新店高中營隊資訊系統", page_icon="🏕️", layout="wide")
-st.markdown("<h1 style='text-align: center;'>🏕️ 新店高中營隊資訊系統</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>新店高中營隊資訊系統</h1>", unsafe_allow_html=True)
 st.markdown("你可以透過左側面板選擇學群，或在下方直接搜尋你有興趣的關鍵字或單位！")
 
 # 如果資料庫是空的 (只有標題沒有資料)
@@ -35,7 +35,7 @@ else:
     st.sidebar.header("🔍 營隊篩選器")
     
     # 1. 學群篩選 (自動抓取資料庫裡有出現的學群，並加上"顯示全部"選項)
-    groups = ["顯示全部"] + list(df['對應學群'].unique())
+    groups = ["全選"] + list(df['對應學群'].unique())
     selected_group = st.sidebar.selectbox("請選擇對應學群：", groups)
     
     # 2. 關鍵字搜尋 (主畫面)
@@ -46,7 +46,7 @@ else:
     filtered_df = df.copy()
     
     # 執行學群過濾
-    if selected_group != "顯示全部":
+    if selected_group != "全選":
         filtered_df = filtered_df[filtered_df['對應學群'] == selected_group]
         
     # 執行關鍵字過濾 (同時比對營隊名稱、單位、關鍵字這三個欄位)
@@ -88,7 +88,7 @@ with st.sidebar.form("subscription_form"):
     track_group = st.sidebar.multiselect(
         "想追蹤的學群 (可複選)：", 
         options=groups,
-        default=["顯示全部"]
+        default=["全選"]
     )
     
     submit_button = st.form_submit_button("送出訂閱 / 更新")
