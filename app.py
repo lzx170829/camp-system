@@ -40,7 +40,7 @@ st.markdown(
 st.markdown(
     """
     <div style='text-align: center;'>
-        <h1 style='margin-bottom: 0px; padding-bottom: 0px;'>🏕️ 新店高中</h1>
+        <h1 style='margin-bottom: 0px; padding-bottom: 0px;'>新店高中</h1>
         <h1 style='margin-top: 5px; padding-top: 0px;'>營隊資訊系統</h1>
         
         <p style='color: #555555; margin-bottom: 0px; padding-bottom: 0px; margin-top: 15px;'>您可以直接輸入關鍵字搜尋，</p>
