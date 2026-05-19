@@ -25,7 +25,7 @@ except Exception as e:
 # ==========================================
 st.set_page_config(page_title="114 營隊資訊檢索系統", page_icon="🏕️", layout="wide")
 st.markdown("<h1 style='text-align: center;'>🏕️ 114 營隊資訊檢索系統</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center;'>您可以從左方快速挑選學群，或直接在右方輸入關鍵字進行搜尋！</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>您可以直接輸入關鍵字搜尋，或利用下方選單快速帶入學群！</p>", unsafe_allow_html=True)
 
 # 如果資料庫是空的 (只有標題沒有資料)
 if df.empty:
@@ -38,42 +38,35 @@ else:
     for g in df['對應學群'].dropna():
         split_groups = [x.strip() for x in str(g).replace("，", ",").split(',') if x.strip()]
         all_groups.extend(split_groups)
-    groups = sorted(list(set(all_groups))) # 這裡不需要「全選」了，不打字就是全選
+    groups = sorted(list(set(all_groups)))
     
     # --- 建立「下拉選單」與「搜尋框」的連動魔法 ---
-    # 當下拉選單被點擊時，這個函數會負責把字「貼」到搜尋框裡
     def fill_search_bar():
         selected = st.session_state.dropdown_selector
         if selected != "✏️ (自行輸入關鍵字)":
-            # 把選單的字塞進搜尋框
             st.session_state.search_bar = selected
         else:
-            # 如果選自行輸入，就清空搜尋框讓學生自己打
             st.session_state.search_bar = "" 
 
-    # 左右並排設計
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        # 這裡的 on_change 會觸發上面的連動魔法
-        st.selectbox(
-            "💡 1. 快速選擇學群：", 
-            ["✏️ (自行輸入關鍵字)"] + groups, 
-            key="dropdown_selector",
-            on_change=fill_search_bar
-        )
-        
-    with col2:
-        # 真正的搜尋核心是這個框框，它會接收下拉選單傳來的字，學生也可以隨意修改
-        search_query = st.text_input(
-            "🔍 2. 搜尋關鍵字或學群：", 
-            key="search_bar"
-        )
+    # --- 上下排列設計 (搜尋優先) ---
+    # 1. 將主要的文字輸入框放在上方 (拿掉數字列點)
+    search_query = st.text_input(
+        "🔍 搜尋關鍵字、學群或主辦單位：", 
+        key="search_bar"
+    )
+
+    # 2. 將學群選單放在下方作為輔助 (拿掉數字列點)
+    st.selectbox(
+        "💡 快速帶入學群：", 
+        ["✏️ (自行輸入關鍵字)"] + groups, 
+        key="dropdown_selector",
+        on_change=fill_search_bar
+    )
 
     # --- 資料過濾邏輯 ---
     filtered_df = df.copy()
     
-    # 只要搜尋框裡面有字，就去四個欄位裡面找 (達到萬用搜尋的效果)
+    # 只要搜尋框裡面有字，就去四個欄位裡面找
     if search_query:
         mask = (
             filtered_df['對應學群'].astype(str).str.contains(search_query, na=False) |
