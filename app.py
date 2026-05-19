@@ -66,11 +66,17 @@ else:
     # 隱藏不需要讓學生看到的欄位 (例如推播狀態)
     display_df = filtered_df.drop(columns=['推播狀態'], errors='ignore')
     
-    # 使用 Streamlit 內建的精美資料表呈現
+    # 使用 Streamlit 內建的精美資料表呈現，並將網址轉換為超連結
     st.dataframe(
         display_df,
         use_container_width=True,
         hide_index=True, # 隱藏最左邊的 0,1,2,3 編號
+        column_config={
+            "營隊連結": st.column_config.LinkColumn(
+                "營隊連結",
+                display_text="🔗 點擊前往" # 這行會把落落長的網址變成乾淨的文字
+            )
+        }
     )
 # ==========================================
 # 3. 學生訂閱追蹤功能 (支援複選與更新)
