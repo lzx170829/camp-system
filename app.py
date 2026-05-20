@@ -1,9 +1,10 @@
 import streamlit as st
-import gspread
 import pandas as pd
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
 # ==========================================
-# 1. 網頁初始設定 (強制收合，測試按鈕是否出現)
+# 1. 網頁初始設定 (這必須是第一個 st 指令)
 # ==========================================
 st.set_page_config(
     page_title="114 營隊資訊檢索系統", 
@@ -13,12 +14,29 @@ st.set_page_config(
 )
 
 # ==========================================
-# 2. 網頁前台設計：學生檢索介面
+# 2. 資料庫連線 (Google Sheets 金鑰設定)
+# ==========================================
+# 設定金鑰與連線權限
+scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["gcp_service_account"], scope)
+gc = gspread.authorize(creds)
+
+# 讀取試算表資料 (⚠️ 這裡的 "您的試算表名稱" 請換成您真實的試算表檔名)
+sh = gc.open("您的試算表名稱") 
+worksheet = sh.worksheet("營隊資訊")
+data = worksheet.get_all_values()
+
+# 建立名為 df 的資料表 (這就是剛剛消失的 df！)
+df = pd.DataFrame(data[1:], columns=data[0])
+
+# ==========================================
+# 3. 網頁前台設計：學生檢索介面
 # ==========================================
 # ✨ 最安全版 CSS：只藏貓咪，不干擾側邊欄按鈕
 st.markdown(
     """
     <style>
+   
     /* 🛡️ 隱藏右上角的 Deploy (貓咪) 按鈕 */
     .stDeployButton { display: none !important; }
     
