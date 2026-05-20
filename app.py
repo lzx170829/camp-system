@@ -31,26 +31,34 @@ st.set_page_config(
     initial_sidebar_state="expanded" 
 )
 
-# ✨ 完美置中與自訂網頁背景、精準隱藏官方圖示
+# ✨ 深色科技風設定與隱藏官方圖示
 st.markdown(
     """
     <style>
-    /* 更改背景顏色 */
-    .stApp { background-color: #F4F7F6; }
-    [data-testid="stSidebar"] { background-color: #E8ECEB; }
-    
-    /* 🛡️ 精準隱藏右上角的 GitHub 貓咪與工具列 (保留左上角的側邊欄開關) */
+    /* 🛡️ 精準隱藏右上角的 GitHub 貓咪與工具列 */
     [data-testid="stToolbar"] { display: none !important; }
     
     /* 🛡️ 隱藏網頁底部的 Made with Streamlit 浮水印 */
     footer { visibility: hidden; }
+
+    /* 🚀 科技感標題特效：漸層與霓虹發光 */
+    .tech-title {
+        background: -webkit-linear-gradient(45deg, #00D2FF, #3A7BD5);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0px 0px 20px rgba(0, 210, 255, 0.4);
+        margin-bottom: 0px; 
+        padding-bottom: 0px;
+        font-weight: 900;
+        letter-spacing: 2px;
+    }
     </style>
     
-    <div style='text-align: center;'>
-        <h1 style='margin-bottom: 0px; padding-bottom: 0px;'>新店高中</h1>
-        <h1 style='margin-top: 5px; padding-top: 0px;'>營隊資訊系統</h1>
-        <p style='color: #555555; margin-bottom: 0px; padding-bottom: 0px; margin-top: 15px;'>您可以直接輸入關鍵字搜尋，</p>
-        <p style='color: #555555; margin-top: 5px; padding-top: 0px;'>或利用下方選單快速帶入學群！</p>
+    <div style='text-align: center; margin-bottom: 30px;'>
+        <h1 class='tech-title'>新店高中</h1>
+        <h1 class='tech-title' style='margin-top: 5px; padding-top: 0px;'>營隊資訊系統</h1>
+        <p style='color: #8892B0; margin-bottom: 0px; padding-bottom: 0px; margin-top: 15px;'>您可以直接輸入關鍵字搜尋，</p>
+        <p style='color: #8892B0; margin-top: 5px; padding-top: 0px;'>或利用下方選單快速帶入學群！</p>
     </div>
     """,
     unsafe_allow_html=True
