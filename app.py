@@ -3,55 +3,33 @@ import gspread
 import pandas as pd
 
 # ==========================================
-# 1. 系統後台設定：連線 Google 試算表
-# ==========================================
-# 讀取 JSON 金鑰檔案 (請確保檔名正確，且放在同一資料夾)
-try:
-    gc = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
-    # 透過試算表名稱打開檔案
-    sh = gc.open("114營隊推播系統資料庫")
-    # 選擇「營隊資訊」分頁
-    worksheet = sh.worksheet("營隊資訊")
-    
-    # 將資料抓下來，並轉換成好處理的 Pandas 表格 (DataFrame)
-    data = worksheet.get_all_records()
-    df = pd.DataFrame(data)
-except Exception as e:
-    st.error("⚠️ 無法連線到資料庫，請檢查金鑰檔案是否正確，或試算表名稱是否相符。")
-    st.stop() # 如果連線失敗，停止執行下面的網頁
-
-# ==========================================
-# 2. 網頁前台設計：學生檢索介面
+# 1. 網頁初始設定 (強制收合，測試按鈕是否出現)
 # ==========================================
 st.set_page_config(
     page_title="114 營隊資訊檢索系統", 
     page_icon="🏕️", 
     layout="wide",
-    initial_sidebar_state="collapsed" # ⚠️ 把這裡改成 collapsed，強制一開始把側邊欄收起來
+    initial_sidebar_state="collapsed" 
 )
 
-
-    # ✨ 深色科技風設定與隱藏官方圖示
+# ==========================================
+# 2. 網頁前台設計：學生檢索介面
+# ==========================================
+# ✨ 最安全版 CSS：只藏貓咪，不干擾側邊欄按鈕
 st.markdown(
     """
     <style>
-    /* 🛡️ 精準隱藏右上角的 GitHub 貓咪與工具列 */
+    /* 🛡️ 隱藏右上角的 Deploy (貓咪) 按鈕 */
+    .stDeployButton { display: none !important; }
+    
+    /* 🛡️ 隱藏右上角的設定選單 */
     [data-testid="stToolbar"] { display: none !important; }
     
     /* 🛡️ 隱藏網頁底部的 Made with Streamlit 浮水印 */
-    footer { visibility: hidden; }
-
-    /* 🚀 讓左上角的「側邊欄開關按鈕」強制顯示，並發出科技藍光 */
-    [data-testid="collapsedControl"], [data-testid="stSidebarCollapseButton"] {
-        display: flex !important;
-        color: #00D2FF !important;
-        transition: 0.3s;
-    }
+    footer { visibility: hidden !important; }
     
-    /* 滑鼠游標移過去時的發光特效 */
-    [data-testid="collapsedControl"]:hover, [data-testid="stSidebarCollapseButton"]:hover {
-        text-shadow: 0px 0px 10px #00D2FF;
-    }
+    /* 💡 確保頂部的隱形區塊背景是透明的，才不會蓋住左上角的開關 */
+    header { background: transparent !important; }
 
     /* 🚀 科技感標題特效：漸層與霓虹發光 */
     .tech-title {
@@ -65,7 +43,7 @@ st.markdown(
         letter-spacing: 2px;
     }
     </style>
-
+    
     <div style='text-align: center; margin-bottom: 30px;'>
         <h1 class='tech-title'>🏕️ 新店高中</h1>
         <h1 class='tech-title' style='margin-top: 5px; padding-top: 0px;'>營隊資訊系統</h1>
@@ -75,6 +53,10 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+# ⚠️ 終極防呆測試：確保側邊欄裡面「絕對有東西」
+st.sidebar.title("📬 訂閱與測試")
+st.sidebar.info("只要這段文字存在，系統就不敢把左上角的 > 按鈕吃掉！")
 
 # 如果資料庫是空的 (只有標題沒有資料)
 if df.empty:
