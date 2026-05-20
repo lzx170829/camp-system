@@ -1,2 +1,9 @@
 [theme]
-base="light"
+# 強制設定為深色模式
+base="dark"
+
+# 科技感主題色調設定
+primaryColor="#00D2FF"         # 主題點綴色：未來感霓虹藍 (按鈕與超連結顏色)
+backgroundColor="#0A0F1D"      # 網頁主背景：極深邃的星空藍黑
+secondaryBackgroundColor="#141E33" # 側邊欄與輸入框背景：略淺一點的深藍
+textColor="#E2E8F0"            # 文字與表格顏色：高質感的冷色灰白
