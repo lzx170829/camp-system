@@ -64,7 +64,8 @@ st.markdown(
         <h1 class='tech-title'>新店高中</h1>
         <h1 class='tech-title' style='margin-top: 5px; padding-top: 0px;'>營隊資訊系統</h1>
         <p style='color: #8892B0; margin-bottom: 0px; padding-bottom: 0px; margin-top: 15px;'>您可以直接輸入關鍵字搜尋，</p>
-        <p style='color: #8892B0; margin-top: 5px; padding-top: 0px;'>或利用下方選單快速帶入學群！</p>
+        <p style='color: #8892B0; margin-top: 5px; padding-top: 0px;'>或利用下方選單快速帶入學群</p>
+        <p style='color: #8892B0; margin-top: 5px; padding-top: 0px;'>打開左方隱藏欄位留下信箱可以追蹤有興趣的學群資訊喔！</p>
     </div>
     """,
     unsafe_allow_html=True
