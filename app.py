@@ -25,7 +25,7 @@ except Exception as e:
 # ==========================================
 # ✨ 加入 initial_sidebar_state="expanded" 強制側邊欄預設打開
 st.set_page_config(
-    page_title="114 營隊資訊檢索系統", 
+    page_title="新店高中營隊資訊檢索系統", 
     page_icon="🏕️", 
     layout="wide",
     initial_sidebar_state="expanded" 
@@ -34,12 +34,27 @@ st.set_page_config(
 # ✨ 深色科技風設定與隱藏官方圖示
 st.markdown(
     """
+    # ✨ 深色科技風設定與隱藏官方圖示
+st.markdown(
+    """
     <style>
     /* 🛡️ 精準隱藏右上角的 GitHub 貓咪與工具列 */
     [data-testid="stToolbar"] { display: none !important; }
     
     /* 🛡️ 隱藏網頁底部的 Made with Streamlit 浮水印 */
     footer { visibility: hidden; }
+
+    /* 🚀 讓左上角的「側邊欄開關按鈕」強制顯示，並發出科技藍光 */
+    [data-testid="collapsedControl"], [data-testid="stSidebarCollapseButton"] {
+        display: flex !important;
+        color: #00D2FF !important;
+        transition: 0.3s;
+    }
+    
+    /* 滑鼠游標移過去時的發光特效 */
+    [data-testid="collapsedControl"]:hover, [data-testid="stSidebarCollapseButton"]:hover {
+        text-shadow: 0px 0px 10px #00D2FF;
+    }
 
     /* 🚀 科技感標題特效：漸層與霓虹發光 */
     .tech-title {
@@ -53,9 +68,12 @@ st.markdown(
         letter-spacing: 2px;
     }
     </style>
+    """,
+    unsafe_allow_html=True
+)
     
     <div style='text-align: center; margin-bottom: 30px;'>
-        <h1 class='tech-title'>新店高中</h1>
+        <h1 class='tech-title'>🏕️ 新店高中</h1>
         <h1 class='tech-title' style='margin-top: 5px; padding-top: 0px;'>營隊資訊系統</h1>
         <p style='color: #8892B0; margin-bottom: 0px; padding-bottom: 0px; margin-top: 15px;'>您可以直接輸入關鍵字搜尋，</p>
         <p style='color: #8892B0; margin-top: 5px; padding-top: 0px;'>或利用下方選單快速帶入學群！</p>
