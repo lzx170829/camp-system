@@ -26,43 +26,22 @@ data = worksheet.get_all_values()
 
 df = pd.DataFrame(data[1:], columns=data[0])
 
+
 # ==========================================
 # 3. 網頁前台設計：學生檢索介面
 # ==========================================
-# ✨ 乾淨版 CSS：只藏干擾元素，確保頂部透明不遮擋按鈕
+# 🛑 裸機測試：暫時把所有 CSS (隱藏貓咪、發光特效) 都刪除，看系統原生的按鈕會不會出來
 st.markdown(
     """
-    <style>
-    /* 🛡️ 隱藏右上角的工具列與底部浮水印 */
-    [data-testid="stToolbar"] { display: none !important; }
-    footer { display: none !important; }
-    
-    /* 💡 確保頂部區域透明，讓原生的側邊欄按鈕可以透出來 */
-    header { background: transparent !important; }
-
-    /* 🚀 科技感標題特效：漸層與霓虹發光 */
-    .tech-title {
-        background: -webkit-linear-gradient(45deg, #00D2FF, #3A7BD5);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-shadow: 0px 0px 20px rgba(0, 210, 255, 0.4);
-        margin-bottom: 0px; 
-        padding-bottom: 0px;
-        font-weight: 900;
-        letter-spacing: 2px;
-    }
-    </style>
-    
     <div style='text-align: center; margin-bottom: 30px;'>
-        <h1 class='tech-title'>新店高中</h1>
-        <h1 class='tech-title' style='margin-top: 5px; padding-top: 0px;'>營隊資訊系統</h1>
+        <h1>🏕️ 新店高中</h1>
+        <h1 style='margin-top: 5px; padding-top: 0px;'>營隊資訊系統</h1>
         <p style='color: #8892B0; margin-bottom: 0px; padding-bottom: 0px; margin-top: 15px;'>您可以直接輸入關鍵字搜尋，</p>
         <p style='color: #8892B0; margin-top: 5px; padding-top: 0px;'>或利用下方選單快速帶入學群！</p>
     </div>
     """,
     unsafe_allow_html=True
 )
-
 # ⚠️ 提前宣告 groups 變數，防止資料庫為空時引發 NameError
 groups = []
 
