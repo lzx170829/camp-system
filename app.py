@@ -31,9 +31,7 @@ st.set_page_config(
     initial_sidebar_state="expanded" 
 )
 
-# ✨ 深色科技風設定與隱藏官方圖示
-st.markdown(
-    """
+
     # ✨ 深色科技風設定與隱藏官方圖示
 st.markdown(
     """
@@ -68,10 +66,7 @@ st.markdown(
         letter-spacing: 2px;
     }
     </style>
-    """,
-    unsafe_allow_html=True
-)
-    
+
     <div style='text-align: center; margin-bottom: 30px;'>
         <h1 class='tech-title'>🏕️ 新店高中</h1>
         <h1 class='tech-title' style='margin-top: 5px; padding-top: 0px;'>營隊資訊系統</h1>
