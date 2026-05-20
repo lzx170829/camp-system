@@ -23,12 +23,11 @@ except Exception as e:
 # ==========================================
 # 2. 網頁前台設計：學生檢索介面
 # ==========================================
-# ✨ 加入 initial_sidebar_state="expanded" 強制側邊欄預設打開
 st.set_page_config(
-    page_title="新店高中營隊資訊檢索系統", 
+    page_title="114 營隊資訊檢索系統", 
     page_icon="🏕️", 
     layout="wide",
-    initial_sidebar_state="expanded" 
+    initial_sidebar_state="collapsed" # ⚠️ 把這裡改成 collapsed，強制一開始把側邊欄收起來
 )
 
 
