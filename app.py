@@ -22,7 +22,7 @@ creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["gcp_service
 gc = gspread.authorize(creds)
 
 # 讀取試算表資料 (⚠️ 這裡的 "您的試算表名稱" 請換成您真實的試算表檔名)
-sh = gc.open("114營隊資訊推播系統資料庫") 
+sh = gc.open("114營隊推播系統資料庫") 
 worksheet = sh.worksheet("營隊資訊")
 data = worksheet.get_all_values()
 
