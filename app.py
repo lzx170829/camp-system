@@ -30,17 +30,12 @@ df = pd.DataFrame(data[1:], columns=data[0])
 # ==========================================
 # 3. 網頁前台設計：學生檢索介面
 # ==========================================
-# ==========================================
-# 3. 網頁前台設計：學生檢索介面
-# ==========================================
-# ✨ 完美版 CSS：精準隱藏貓咪、保留按鈕、加入科技發光特效
+# ✨ 完美版 CSS：精準隱藏貓咪、保留按鈕、加入科技發光與訂閱提示特效
 st.markdown(
     """
     <style>
-    /* 🎯 精準狙擊：只隱藏右上角的 Deploy (貓咪) 按鈕，絕對不傷及無辜 */
+    /* 🎯 精準狙擊：只隱藏右上角的 Deploy (貓咪) 按鈕與設定選單 */
     [data-testid="stDeployButton"] { display: none !important; }
-    
-    /* 🎯 精準狙擊：隱藏右上角三個點的設定選單 (讓學生無法看見後台選項) */
     [data-testid="MainMenu"] { display: none !important; }
     [data-testid="stToolbarActions"] { display: none !important; }
 
@@ -58,18 +53,30 @@ st.markdown(
         font-weight: 900;
         letter-spacing: 2px;
     }
+    
+    /* ✨ 新增：星塵冰藍色的微光提示語 */
+    .cta-text {
+        color: #A0E2FF; /* 柔和的冰藍色 */
+        font-size: 0.95em;
+        margin-top: 10px;
+        text-shadow: 0px 0px 8px rgba(160, 226, 255, 0.5); /* 微微的發光感 */
+        font-weight: 500;
+        letter-spacing: 1px;
+    }
     </style>
     
     <div style='text-align: center; margin-bottom: 30px;'>
         <h1 class='tech-title'>新店高中</h1>
         <h1 class='tech-title' style='margin-top: 5px; padding-top: 0px;'>營隊資訊系統</h1>
-        <p style='color: #8892B0; margin-bottom: 0px; padding-bottom: 0px; margin-top: 15px;'>您可以直接輸入關鍵字搜尋，</p>
-        <p style='color: #8892B0; margin-top: 5px; padding-top: 0px;'>或利用下方選單快速帶入學群</p>
-        <p style='color: #8892B0; margin-top: 5px; padding-top: 0px;'>打開左方隱藏欄位留下信箱可以追蹤有興趣的學群資訊喔！</p>
+        <p style='color: #8892B0; margin-bottom: 0px; padding-bottom: 0px; margin-top: 15px;'>您可以直接輸入關鍵字搜尋</p>
+        <p style='color: #8892B0; margin-top: 5px; padding-bottom: 0px;'>或利用下方選單快速帶入學群！</p>
+        
+        <p class='cta-text'>✨ 打開左方隱藏欄位，留下信箱可以追蹤有興趣的學群資訊喔！</p>
     </div>
     """,
     unsafe_allow_html=True
 )
+
 # ⚠️ 提前宣告 groups 變數，防止資料庫為空時引發 NameError
 groups = []
 
