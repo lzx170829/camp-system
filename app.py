@@ -33,21 +33,23 @@ df = pd.DataFrame(data[1:], columns=data[0])
 # 3. 網頁前台設計：學生檢索介面
 # ==========================================
 # ✨ 最安全版 CSS：只藏貓咪，不干擾側邊欄按鈕
+# ✨ 深色科技風設定與隱藏官方圖示
 st.markdown(
     """
     <style>
-   
-    /* 🛡️ 隱藏右上角的 Deploy (貓咪) 按鈕 */
-    .stDeployButton { display: none !important; }
-    
-    /* 🛡️ 隱藏右上角的設定選單 */
+    /* 🛡️ 隱藏右上角的工具列與底部浮水印 */
     [data-testid="stToolbar"] { display: none !important; }
-    
-    /* 🛡️ 隱藏網頁底部的 Made with Streamlit 浮水印 */
-    footer { visibility: hidden !important; }
-    
-    /* 💡 確保頂部的隱形區塊背景是透明的，才不會蓋住左上角的開關 */
-    header { background: transparent !important; }
+    footer { display: none !important; }
+
+    /* 🚀 強制讓側邊欄按鈕變成超明顯的亮藍色，並加上底框 */
+    [data-testid="collapsedControl"] {
+        display: flex !important;
+        color: #00D2FF !important;
+        background-color: rgba(0, 210, 255, 0.1) !important; /* 加上淡淡的科技藍底色 */
+        border-radius: 8px !important;
+        padding: 5px !important;
+        z-index: 999999 !important; /* 強制置頂，避免被其他隱形區塊遮擋 */
+    }
 
     /* 🚀 科技感標題特效：漸層與霓虹發光 */
     .tech-title {
@@ -71,7 +73,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
 # ⚠️ 終極防呆測試：確保側邊欄裡面「絕對有東西」
 st.sidebar.title("📬 訂閱與測試")
 st.sidebar.info("只要這段文字存在，系統就不敢把左上角的 > 按鈕吃掉！")
