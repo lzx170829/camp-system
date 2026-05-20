@@ -192,3 +192,7 @@ with st.sidebar.form("subscription_form"):
                 st.sidebar.error("寫入資料庫失敗，請稍後再試。")
         else:
             st.sidebar.warning("請完整填寫姓名、信箱，並至少選擇一個學群喔！")
+
+# 測試呼喚側邊欄
+st.sidebar.header("測試專區")
+st.sidebar.write("只要這裡有內容，發光的按鈕就會出現！")
