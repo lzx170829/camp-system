@@ -20,7 +20,7 @@ scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/au
 creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["gcp_service_account"], scope)
 gc = gspread.authorize(creds)
 
-sh = gc.open("114營隊推播系統資料庫") 
+sh = gc.open("新店高中營隊推播系統資料庫") 
 worksheet = sh.worksheet("營隊資訊")
 data = worksheet.get_all_values()
 
